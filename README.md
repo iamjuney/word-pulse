@@ -7,6 +7,7 @@ WordPulse is a single page web application that allows users to create rooms and
 -   Create rooms
 -   Join rooms
 -   Contribute to word clouds in real-time
+-   Profanity filter
 -   View word clouds in real-time
 -   Download word clouds as images
 
