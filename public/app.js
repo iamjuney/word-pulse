@@ -184,3 +184,33 @@ const downloadWordCloud = () => {
     link.href = canvas.toDataURL('image/png');
     link.click();
 };
+
+// Function to fetch a random Wikipedia topic
+const fetchRandomWikipediaTopic = async () => {
+    try {
+        // Fetch a random article
+        const randomResponse = await fetch(
+            'https://en.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*',
+        );
+        const randomData = await randomResponse.json();
+
+        // Get the title of the random article
+        const title = randomData.query.random[0].title;
+
+        // Fetch the summary of the random article
+        const summaryResponse = await fetch(
+            `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`,
+        );
+        const summaryData = await summaryResponse.json();
+
+        // Extract the page ID to get the extract
+        const pageId = Object.keys(summaryData.query.pages)[0];
+        const extract = summaryData.query.pages[pageId].extract;
+
+        // Display the topic and summary on the webpage
+        document.getElementById('topic').value = `What words come to mind when you hear about "${title}"?`;
+        document.getElementById('summary').innerText = `Summary: \n${extract}`;
+    } catch (error) {
+        console.error('Error fetching random Wikipedia topic:', error);
+    }
+};
